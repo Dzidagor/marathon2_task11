@@ -1,50 +1,8 @@
 "use strict";
 
-const blockItems = document.querySelectorAll('.block-item'),
-      wrapper = document.querySelector('.wrapper-blocks');
 
 
-
-blockItems[0].style.backgroundColor = 'blue';
-blockItems[1].style.display = 'flex';
-blockItems[1].style.justifyContent = 'center';
-blockItems[1].style.alignItems = 'center';
-blockItems[1].style.width = '400px';
-blockItems[2].style.cssText = "border-radius: 50%"
-
-const newItem = document.createElement('div');
-const newItem2 = document.createElement('div');
-
-newItem.classList.add('new-block-item');
-newItem2.classList.add('new-block-item-2')
-
-blockItems.forEach(item => {
-  item.style.borderRadius = '5%';
-})
-
-wrapper.append(newItem);
-wrapper.prepend(newItem2);
-
-wrapper.style.alignItems = 'center';
-
-blockItems[0].addEventListener('click', () => {
-  alert('Click');
-});
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-// const numberOfFilms = prompt("Сколько фильмов вы уже посмотрели?", "");
+const numberOfFilms = prompt("Сколько фильмов вы уже посмотрели?", "");
 
 let personalMovieDB = {
   count: numberOfFilms,
@@ -52,12 +10,12 @@ let personalMovieDB = {
   actors: {},
   genres: [],
   privat: false,
-  showMyDB: function() {
-    if  (!this.privat) {
+  showMyDB() {
+    if (!this.privat) {
       console.log(this);
     }
   },
-  writeYourGenres: function() {
+  writeYourGenres() {
     let counter = 0;
     while (counter <= 2) {
       const genre = prompt(`Ваш любимый жанр под номером ${counter+1}`)
@@ -67,66 +25,78 @@ let personalMovieDB = {
       counter ++;
       this.genres.push(genre);
     }
-    this.genres.forEach(function(item, iter){
-      alert(`Любимый жанр ${iter + 1} - это ${item}`);
-    });
+    this.genres.forEach((genre, i) => console.log(`Любимый жанр ${i+1} - это ${genre}`));
   },
-  writeYourMovies: function() {
-    while (counter < 2) {
+  writeYourMovies() {
+    let counter = 0;
+    while (counter <= 5) {
       const movie = prompt("Один из последних просмотренных фильмов?", ""),
-          rate = prompt("На сколько оцените его?", "");
-      if (movie.length == 0 || rate.length == 0 || movie == null || rate == null || movie.length > 50) {
-        continue;
-      }
-      counter++;
-      this.movies[movie] = rate;
+            rate = prompt("На сколько оцените его?", "");
+    if (movie == null || rate == null || movie.length == 0 || rate.length == 0 || movie.length > 50) {
+      continue;
+    }
+    counter++;
+    this.movies[movie] = rate;
     }
   },
-  writeWatchedFilms: function() {
-    if (numberOfFilms < 10){
-      alert("Просмотрено довольно мало фильмов");
-    } else if (numberOfFilms < 31) {
-      alert("Вы классический зритель");
-    } else if (numberOfFilms > 30){
-      alert("Вы киноман");
-    } else {
-      alert("Произошла ошибка")
-    }
+  toggleVisibleMyDB() {
+    this.privat = !this.privat
   },
-  toggleVisibleMyDB: function() {
-    if (this.privat) {
-      this.privat = false;
-    } else {
-      this.privat = true;
-    }
-  }
-  },
-  counter = 0;
-
-
-
-// personalMovieDB.writeYourMovies();
-// personalMovieDB.writeYourGenres();
-// personalMovieDB.writeWatchedFilms();
+};
 
 
 
 
-// personalMovieDB.showMyDB();
-
-// personalMovieDB.toggleVisibleMyDB();
-
-// personalMovieDB.showMyDB();
-
-// personalMovieDB.toggleVisibleMyDB();
-
-// personalMovieDB.showMyDB();
+personalMovieDB.writeYourMovies();
 
 
-// --------------------------------------------------------------------------------------------------------
+// if (numberOfFilms < 10){
+//   alert("Просмотрено довольно мало фильмов");
+// } else if (numberOfFilms < 31) {
+//   alert("Вы классический зритель");
+// } else if (numberOfFilms > 30){
+//   alert("Вы киноман");
+// } else {
+//   alert("Произошла ошибка")
+// }
 
 
-// document.getElementById(''); - получение элемента по id
-// document.querySelectorAll('') - получить псевдосписок элементов по любому селектору
-// document.querySelector('') - получение первого элемента по селектору
-// что-то.style.названиеСтиля - изменение стиля inline
+personalMovieDB.showMyDB();
+
+let orangeBlock = document.getElementById('orangeBlock');
+orangeBlock.style.height = '20px';
+orangeBlock.style.width = '100%';
+orangeBlock.style.backgroundColor = 'orange';
+
+let movieTiles = document.getElementById('movieTiles');
+movieTiles.style.display = 'flex';
+movieTiles.style.flexWrap = 'wrap';
+movieTiles.style.justifyContent = 'space-around';
+
+for (let key in personalMovieDB.movies) {
+  let tile = document.createElement('div');
+  tile.style.flex = '1 0 20%';
+  tile.style.border = '1px solid black';
+  tile.style.margin = '10px';
+  tile.style.padding = '10px';
+  tile.style.boxSizing = 'border-box';
+  tile.style.textAlign = 'center';
+
+  let keyP = document.createElement('p');
+  keyP.textContent = key;
+  tile.appendChild(keyP);
+
+  let valueP = document.createElement('p');
+  valueP.textContent = `Рейтинг: ${personalMovieDB.movies[key]}`;
+  tile.appendChild(valueP);
+
+  movieTiles.appendChild(tile);
+}
+
+let orangeBlock2 = document.createElement('div');
+orangeBlock2.style.height = '20px';
+orangeBlock2.style.width = '100%';
+orangeBlock2.style.backgroundColor = 'orange';
+document.body.appendChild(orangeBlock2);
+
+
